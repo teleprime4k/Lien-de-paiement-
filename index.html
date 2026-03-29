@@ -14,6 +14,124 @@
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
+
+/* Conteneur de l'alerte */
+        #alertMessage {
+            position: fixed;
+            top: -100px; /* Caché au début pour l'animation */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px; /* Plus large pour les TV/Tablettes */
+            background: var(--alert-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-dark);
+            padding: 20px 25px;
+            border-radius: 16px;
+            border: 1px solid rgba(9, 198, 37, 0.2);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            box-shadow: var(--shadow);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        #alertMessage.show {
+            top: 5%; /* Position relative au haut de l'écran */
+        }
+
+        #alertMessage.hide {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px) scale(0.95);
+        }
+
+        /* Icône adaptable */
+        .alert-icon {
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Texte adaptable */
+        .alert-content {
+            flex-grow: 1;
+            line-height: 1.4;
+            font-size: 1.2rem; /* Taille de base plus grande pour TV */
+            color: var(--text-body); 
+        }
+
+        .alert-content strong {
+            color: var(--accent-color);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        /* Barre de progression temporelle */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--accent-color);
+            width: 100%;
+            transform-origin: left;
+        }
+
+        @keyframes shrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+
+        /* --- ADAPTATIONS SPECIFIQUES --- */
+
+        /* Tablettes (Écrans moyens) */
+        @media (max-width: 1024px) {
+            #alertMessage {
+                width: 80%;
+                padding: 20px;
+            }
+            .alert-content { font-size: 1.1rem; }
+            .alert-content strong { font-size: 1.3rem; }
+        }
+
+        /* Téléphones (Petits écrans) */
+        @media (max-width: 600px) {
+            #alertMessage {
+                width: 92%;
+                padding: 15px;
+                gap: 12px;
+                border-radius: 15px;
+            }
+            .alert-icon { font-size: 2rem; }
+            .alert-content { font-size: 0.95rem; }
+            .alert-content strong { font-size: 1.1rem; }
+        }
+
+        /* Télévisions (Grand écrans & recul) */
+        @media (min-width: 1900px) {
+            #alertMessage {
+                max-width: 1000px;
+                padding: 40px;
+                border-radius: 30px;
+            }
+            .alert-icon { font-size: 4rem; }
+            .alert-content { font-size: 1.6rem; }
+            .alert-content strong { font-size: 2.2rem; }
+            .progress-bar { height: 10px; }
+        }
+
+        
     </style>
 </head>
 <body class="bg-slate-900 min-h-screen flex items-center justify-center">
@@ -139,6 +257,17 @@
                 s.src="https://client.crisp.chat/l.js";
                 s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();
 </script>
+
+ <!-- Message d'alerte -->
+<!-- Structure de l'alerte -->
+<div id="alertMessage" onclick="closeAlert()"> 
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-content">
+        <strong> POur tout question </strong>
+        Contacter nous sur le Tchat Bleu qui ce trouve tout en bas.
+    </div>
+    <div class="progress-bar" id="progressBar"></div>
+</div>
     
 </body>
 </html>
